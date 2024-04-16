@@ -29,7 +29,7 @@ const PokemonDetailPage: React.FC = () => {
 
     return (
         pokemonDetail ? (
-            <div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
                 <img src={pokemonDetail.image} alt={pokemonDetail.name} />
                 <h1>{pokemonDetail.name}</h1>
                 <p>{pokemonDetail.abilities}</p>

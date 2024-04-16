@@ -43,23 +43,23 @@ const Page = () => {
    };
 
    return (
-     <div>
-       {pokemons.map(({ name, url }) => (
-         <div key={name} style={{ marginBottom:'10px' }}>
-           <span>{name}</span>
-           <button onClick={() => handleDetailsClick(url)}>Детали</button>
-           
-           <Link href={`/${name}`} legacyBehavior>
-             <a target="_blank">Подробно</a>
-            </Link>
+    <div>
+      {pokemons.map(({ name, url }) => (
+        <div key={name} style={{ marginBottom:'10px' }}>
+          <span>{name}</span>
+          <button onClick={() => handleDetailsClick(url)} style={{ marginLeft: '10px', padding: '5px 10px', backgroundColor: '#0070f3', color: '#fff', textDecoration: 'none', borderRadius: '5px' }}>Детали</button>
+          
+          <Link href={`/${name}`} legacyBehavior>
+            <a target="_blank" style={{ marginLeft: '10px', padding: '5px 10px', backgroundColor: '#0070f3', color: '#fff', textDecoration: 'none', borderRadius: '5px' }}>Подробно</a>
+           </Link>
 
-            {selectedDetail && selectedDetail.name === name && 
-              (<span style={{ marginLeft:"20px" }}>{`Имя:${selectedDetail.name}, Способности:${selectedDetail.abilities}, Опыт:${selectedDetail.experience}, Рост:${selectedDetail.height}`}</span>)
-            }
-         </div>
-       ))}
-     </div>
-   );
+           {selectedDetail && selectedDetail.name === name && 
+             (<span style={{ marginLeft:"20px" }}>{`Имя:${selectedDetail.name}, Способности:${selectedDetail.abilities}, Опыт:${selectedDetail.experience}, Рост:${selectedDetail.height}`}</span>)
+           }
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default Page;
