@@ -6,19 +6,29 @@ const DetailPage = ({ pokeName }) => {
   return <div>{pokeName}</div>;
 };
 
+const PageCounter = ({ currentPage, totalPages }) => {
+  return (
+    <div>
+      Страница {currentPage} из {totalPages}.
+    </div>
+  );
+};
+
 const Page = () => {
   const [pokemons, setPokemons] = useState([]);
   const [selectedDetail, setSelectedDetail] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(10);
 
   useEffect(() => {
     async function getPokemon() {
-      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=10');
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=10&offset=${(currentPage - 1) * 10}`);
       const data = await response.json();
       setPokemons(data.results.map(pokemon => ({ name: pokemon.name, url: pokemon.url })));
     }
-    
+
     getPokemon();
-  }, []);
+  }, [currentPage]);
 
   const handleDetailsClick = async (url) => {
     setSelectedDetail(null);
@@ -42,6 +52,9 @@ const Page = () => {
      }
    };
 
+   const nextPage = () => setCurrentPage(currentPage + 1);
+   const previousPage = () => setCurrentPage(currentPage - 1);
+
    return (
     <div>
       {pokemons.map(({ name, url }) => (
@@ -58,6 +71,9 @@ const Page = () => {
            }
         </div>
       ))}
+      <button onClick={previousPage}>Предыдущая</button>
+      <button onClick={nextPage}>Следующая</button>
+      <PageCounter currentPage={currentPage} totalPages={totalPages} />
     </div>
   );
 };
