@@ -1,5 +1,10 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+
+const DetailPage = ({ pokeName }) => {
+  return <div>{pokeName}</div>;
+};
 
 const Page = () => {
   const [pokemons, setPokemons] = useState([]);
@@ -9,10 +14,9 @@ const Page = () => {
     async function getPokemon() {
       const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=10');
       const data = await response.json();
-      // Сохраняем name и url для каждого покемона
       setPokemons(data.results.map(pokemon => ({ name: pokemon.name, url: pokemon.url })));
     }
-
+    
     getPokemon();
   }, []);
 
@@ -27,8 +31,7 @@ const Page = () => {
           name: pokemonData.name,
           abilities: pokemonData.abilities.map(a => a.ability.name).join(', '),
           experience: pokemonData.base_experience,
-          height: pokemonData.height,
-          url: url     
+          height: pokemonData.height
         });
       } else {
          throw new Error('Не удалось получить информацию о покемоне');
@@ -42,16 +45,17 @@ const Page = () => {
    return (
      <div>
        {pokemons.map(({ name, url }) => (
-         <div key={name} style={{ display: 'flex', alignItems: 'center', marginBottom:'10px' }}>
-           <span>{`${name}:${url}`}</span>
-           {/* Передача URL как параметра */}
+         <div key={name} style={{ marginBottom:'10px' }}>
+           <span>{name}</span>
            <button onClick={() => handleDetailsClick(url)}>Детали</button>
            
-            {/* Использование данных из selectedDetail */}
-           {selectedDetail && selectedDetail.name === name && 
-             (<span style={{ marginLeft:"20px" }}>{`Имя:${selectedDetail.name}, Способности:${selectedDetail.abilities}, Опыт:${selectedDetail.experience}, Рост:${selectedDetail.height}`}</span>)
+           <Link href={`/${name}`} legacyBehavior>
+             <a target="_blank">Подробно</a>
+            </Link>
+
+            {selectedDetail && selectedDetail.name === name && 
+              (<span style={{ marginLeft:"20px" }}>{`Имя:${selectedDetail.name}, Способности:${selectedDetail.abilities}, Опыт:${selectedDetail.experience}, Рост:${selectedDetail.height}`}</span>)
             }
-            
          </div>
        ))}
      </div>
