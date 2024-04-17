@@ -20,9 +20,8 @@ const Page = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
   const [sortType, setSortType] = useState('id');
-  const [filterName, setFilterName] = useState('');
-  const [filterId, setFilterId] = useState(''); 
-  const [filterHeight, setFilterHeight] = useState('');
+  const [filterType, setFilterType] = useState('name');
+  const [filterValue, setFilterValue] = useState('');
   const itemsPerPage = 10;
 
   useEffect(() => {
@@ -107,32 +106,29 @@ const Page = () => {
     setSortType(event.target.value);
    };
 
-   const handleFilterNameChange = (event) => {
-    setFilterName(event.target.value.toLowerCase()); 
+   const handleFilterTypeChange = (event) => {
+    setFilterType(event.target.value);
    };
 
-   const handleFilterIdChange = (event) => {
-    setFilterId(event.target.value); 
+   const handleFilterValueChange = (event) => {
+    setFilterValue(event.target.value.toLowerCase()); 
    };
 
-   const handleFilterHeightChange = (event) => {
-    setFilterHeight(event.target.value);
-   };
-
-   return (
+  return (
     <div>
-      <input type="text" onChange={handleFilterNameChange} placeholder="Фильтр по имени..." /> 
-      <input type="text" onChange={handleFilterIdChange} placeholder="Фильтр по ID..." /> 
-      <input type="text" onChange={handleFilterHeightChange} placeholder="Фильтр по высоте..." /> 
+      <input type="text" onChange={handleFilterValueChange} placeholder="Фильтр..." /> 
+      <select onChange={handleFilterTypeChange}>
+        <option value="name">Имя</option>
+        <option value="id">ID</option>
+        <option value="height">Высота</option>
+      </select>
       <select onChange={handleSortChange}>
         <option value="id">ID</option>
         <option value="name">Имя</option>
         <option value="height">Высота</option>
-       </select>
-       {pokemons
-        .filter(({ name }) => name.toLowerCase().includes(filterName)) 
-        .filter(({ id }) => id.toString().includes(filterId)) 
-        .filter(({ height }) => height.toString().includes(filterHeight)) 
+      </select>
+      {pokemons
+        .filter((pokemon) => pokemon[filterType].toString().toLowerCase().includes(filterValue)) 
         .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
         .map(({ id, name, url }) => (
           <div key={id} style={{ marginBottom:'10px' }}>
