@@ -46,27 +46,29 @@ const Page = () => {
     getAllPokemon();
   }, []);
 
-  useEffect(() => {
-    sortPokemons();
-  }, [pokemons, sortType]);
+  const [sortedPokemons, setSortedPokemons] = useState([]);
 
-  const sortPokemons = () => {
-    let sortedPokemons;
-    switch(sortType) {
-      case 'id' :
-        sortedPokemons = [...pokemons].sort((a , b) => a.id - b.id);
-        break;
-      case 'name' :
-        sortedPokemons = [...pokemons].sort((a , b) => a.name.localeCompare(b.name));
-        break;
-      case 'height':
-        sortedPokemons = [...pokemons].sort((a , b) => a.height - b.height);
-        break;
-        default:
-          sortedPokemons = pokemons;
-    }
-    setPokemons(sortedPokemons);
+useEffect(() => {
+  sortPokemons();
+}, [pokemons, sortType]);
+
+const sortPokemons = () => {
+  let sorted;
+  switch(sortType) {
+    case 'id' :
+      sorted = [...pokemons].sort((a , b) => a.id - b.id);
+      break;
+    case 'name' :
+      sorted = [...pokemons].sort((a , b) => a.name.localeCompare(b.name));
+      break;
+    case 'height':
+      sorted = [...pokemons].sort((a , b) => a.height - b.height);
+      break;
+      default:
+        sorted = pokemons;
   }
+  setSortedPokemons(sorted);
+}
 
   const handleDetailsClick = async (url) => {
     setSelectedDetail(null);
